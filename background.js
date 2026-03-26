@@ -10,7 +10,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         const url = new URL(tabs[0].url);
         const origin = url.origin;
 
-        // Only clear http/https pages
         if (!origin.startsWith('http')) {
            console.warn("Cannot clean non-http(s) pages.");
            return;
@@ -30,5 +29,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         console.error("Invalid URL:", tabs[0].url);
       }
     });
+  } else if (request.action === "cleanAllCache") {
+    chrome.browsingData.removeCache({}, function() {
+      console.log("Successfully cleaned entire browser cache");
+      sendResponse({ status: "success" });
+    });
+    return true; // Keep the message channel open for sendResponse
   }
 });

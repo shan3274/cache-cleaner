@@ -36,28 +36,38 @@
       margin: 0;
       text-align: center;
     }
-    #cleanBtn {
+    #cleanBtn, #clearAllBtn {
       width: 100%;
       padding: 12px 16px;
-      background-color: #2563eb;
-      color: white;
       border: none;
       border-radius: 8px;
       font-size: 14px;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.2s ease;
+    }
+    #cleanBtn {
+      background-color: #2563eb;
+      color: white;
       box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
     }
     #cleanBtn:hover {
       background-color: #1d4ed8;
       transform: translateY(-1px);
     }
-    #cleanBtn:active {
-      background-color: #1e40af;
+    #clearAllBtn {
+      background-color: #ef4444;
+      color: white;
+      box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.2);
+    }
+    #clearAllBtn:hover {
+      background-color: #dc2626;
+      transform: translateY(-1px);
+    }
+    #cleanBtn:active, #clearAllBtn:active {
       transform: translateY(0);
     }
-    #cleanBtn:disabled {
+    #cleanBtn:disabled, #clearAllBtn:disabled {
       background-color: #9ca3af;
       cursor: not-allowed;
       box-shadow: none;
@@ -73,10 +83,11 @@
   <div class="container">
     <div class="header">
       <h2>Smart Cache Cleaner</h2>
-      <p>Clears data for the current domain only to fix login issues.</p>
+      <p>Clean domain-specific or entire browser cache.</p>
     </div>
-    <button id="cleanBtn">Fix Login Issue</button>
-    <div class="footer">The page will reload automatically.</div>
+    <button id="cleanBtn">Fix Current Site (Login)</button>
+    <button id="clearAllBtn">Clear Entire Browser Cache</button>
+    <div class="footer">Selected action will apply immediately.</div>
   </div>
   <script src="popup.js"></script>
 </body>
