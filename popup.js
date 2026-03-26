@@ -1,24 +1,23 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const cleanBtn = document.getElementById("cleanBtn");
   const clearAllBtn = document.getElementById("clearAllBtn");
   
-  cleanBtn.addEventListener("click", () => {
-    cleanBtn.disabled = true;
-    cleanBtn.textContent = "Cleaning...";
-    chrome.runtime.sendMessage({ action: "cleanDomain" }, () => {
-      setTimeout(() => {
-        window.close();
-      }, 500);
-    });
-  });
-
   clearAllBtn.addEventListener("click", () => {
-    clearAllBtn.disabled = true;
-    clearAllBtn.textContent = "Cleaning Cache...";
-    chrome.runtime.sendMessage({ action: "cleanAllCache" }, () => {
-      setTimeout(() => {
-        window.close();
-      }, 500);
-    });
+    if (confirm("Are you sure you want to clear ALL browser data? This cannot be undone.")) {
+      clearAllBtn.disabled = true;
+      clearAllBtn.textContent = "Purging...";
+      
+      chrome.runtime.sendMessage({ action: "purgeAllData" }, (response) => {
+        if (response && response.status === "success") {
+          clearAllBtn.textContent = "Done!";
+          setTimeout(() => {
+            window.close();
+          }, 1000);
+        } else {
+          clearAllBtn.disabled = false;
+          clearAllBtn.textContent = "Clear Everything Now";
+          alert("Something went wrong. Please try again.");
+        }
+      });
+    }
   });
 });

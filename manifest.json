@@ -1,17 +1,11 @@
 {
   "manifest_version": 3,
-  "name": "Smart Cache Cleaner",
+  "name": "Total Browser Purge",
   "version": "1.0.0",
-  "description": "Fix login issues by cleaning domain cache smartly.",
+  "description": "One-click to clear all browser cache, history, cookies, and storage permanently.",
   "permissions": [
     "browsingData",
-    "cookies",
-    "storage",
-    "tabs",
-    "scripting"
-  ],
-  "host_permissions": [
-    "<all_urls>"
+    "storage"
   ],
   "action": {
     "default_popup": "popup.html"

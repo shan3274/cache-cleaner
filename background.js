@@ -1,57 +1,31 @@
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.action === "cleanDomain") {
-    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-      if (!tabs[0] || !tabs[0].url) {
-        console.error("No active tab found or URL missing.");
-        return;
-      }
-
-      try {
-        const url = new URL(tabs[0].url);
-        const origin = url.origin;
-
-        if (!origin.startsWith('http')) {
-           console.warn("Cannot clean non-http(s) pages.");
-           return;
-        }
-
-        chrome.browsingData.remove({
-          origins: [origin]
-        }, {
-          appcache: true,
-          cache: true,
-          cacheStorage: true,
-          cookies: true,
-          fileSystems: true,
-          indexedDB: true,
-          localStorage: true,
-          serviceWorkers: true,
-          webSQL: true
-        }, function() {
-          console.log(`Successfully cleaned data for ${origin}`);
-          chrome.tabs.reload(tabs[0].id);
-        });
-      } catch (e) {
-        console.error("Invalid URL:", tabs[0].url);
-      }
-    });
-  } else if (request.action === "cleanAllCache") {
-    chrome.browsingData.remove({
-      since: 0
-    }, {
+  if (request.action === "purgeAllData") {
+    // These are all the types of data that can be removed
+    const dataToRemove = {
       appcache: true,
       cache: true,
       cacheStorage: true,
       cookies: true,
+      downloads: true,
       fileSystems: true,
+      formData: true,
+      history: true,
       indexedDB: true,
       localStorage: true,
+      passwords: true,
       serviceWorkers: true,
       webSQL: true
-    }, function() {
-      console.log("Successfully cleaned entire browser cache and data");
+    };
+
+    // 'since: 0' means everything from the beginning of time
+    chrome.browsingData.remove({
+      since: 0
+    }, dataToRemove, function() {
+      console.log("Successfully purged all browser data.");
       sendResponse({ status: "success" });
     });
-    return true; // Keep the message channel open for sendResponse
+
+    // Return true to indicate we will respond asynchronously
+    return true;
   }
 });
