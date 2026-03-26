@@ -18,9 +18,15 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         chrome.browsingData.remove({
           origins: [origin]
         }, {
-          cookies: true,
+          appcache: true,
           cache: true,
-          localStorage: true
+          cacheStorage: true,
+          cookies: true,
+          fileSystems: true,
+          indexedDB: true,
+          localStorage: true,
+          serviceWorkers: true,
+          webSQL: true
         }, function() {
           console.log(`Successfully cleaned data for ${origin}`);
           chrome.tabs.reload(tabs[0].id);
@@ -30,8 +36,20 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       }
     });
   } else if (request.action === "cleanAllCache") {
-    chrome.browsingData.removeCache({}, function() {
-      console.log("Successfully cleaned entire browser cache");
+    chrome.browsingData.remove({
+      since: 0
+    }, {
+      appcache: true,
+      cache: true,
+      cacheStorage: true,
+      cookies: true,
+      fileSystems: true,
+      indexedDB: true,
+      localStorage: true,
+      serviceWorkers: true,
+      webSQL: true
+    }, function() {
+      console.log("Successfully cleaned entire browser cache and data");
       sendResponse({ status: "success" });
     });
     return true; // Keep the message channel open for sendResponse
